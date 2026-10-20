@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>STARSPELL — The Hollow Sky</title>
+<style>
+  :root{--ink:#e8e4f4;--dim:#a89fc4;--gold:#ffd77a;--gold-hot:#fff2c9;--ember:#ffb36b;--bg:#0d1026;--card:#171a38;--card2:#1e2246;--line:#2e3260;--good:#7ce08a;--bad:#e07c7c;--blue:#7cb8e0}
+  *{box-sizing:border-box}
+  body{margin:0;background:#0d1026 linear-gradient(180deg,#0d1026 0%,#1f1534 55%,#3a1f2a 100%);color:var(--ink);font:16px/1.55 Georgia,"Palatino Linotype",serif;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:28px 16px}
+  h1{font-size:34px;margin:8px 0 2px;color:var(--gold-hot);letter-spacing:1px}
+  h1 .star{color:var(--ember)}
+  h2{font-size:22px;color:var(--gold);margin:44px 0 6px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  h3{font-size:17px;margin:0 0 4px;color:var(--gold-hot)}
+  .sub{color:var(--dim);margin:0 0 18px}
+  .prov{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:14.5px;color:var(--dim)}
+  .prov b{color:var(--ink)}
+  .lawbar{background:#241a3d;border:1px solid #4a3a6a;border-radius:10px;padding:10px 16px;margin:14px 0;color:#e0c9f0;font-size:14.5px}
+  .warnbar{background:#3a2414;border:1px solid #8a5a2a;border-radius:10px;padding:10px 16px;margin:14px 0;color:#ffd9b0;font-size:14.5px}
+  .note{font-size:14px;color:var(--dim)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:18px 0}
+  .card.rec{border-color:#6b5a22;box-shadow:0 0 0 1px #6b5a22 inset}
+  .card .why{font-size:14.5px;color:var(--dim);margin:6px 0 10px}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;font:12.5px Helvetica,sans-serif;color:var(--dim);margin:4px 0 8px}
+  .meta span{border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+  .meta .r{border-color:var(--gold);color:var(--gold)}
+  .phones{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin-top:12px}
+  .phones figure{margin:0;flex:0 1 230px;min-width:150px}
+  .phones img{width:100%;border-radius:14px;display:block;background:#000;border:1px solid var(--line)}
+  .lbl{font-size:12px;color:var(--dim);text-align:center;margin-top:5px;font-family:Helvetica,sans-serif}
+  .pending{border:1px dashed #6a5a8a;border-radius:12px;padding:12px 14px;color:var(--dim);font-size:14px;margin-top:10px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+  .chip{border:1px solid var(--line);background:var(--card2);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer;font:14px Helvetica,sans-serif}
+  .chip.on-pick{background:#4a3c10;border-color:var(--gold);color:var(--gold-hot)}
+  .chip.on-short{background:#1f3a2a;border-color:var(--good);color:#c9f5cf}
+  .chip.on-pass{background:#3a1f22;border-color:var(--bad);color:#f5c9c9}
+  .chip.on-ans{background:#1f2a3a;border-color:var(--blue);color:#cfe9ff}
+  textarea.cmt{width:100%;min-height:44px;margin-top:10px;background:#101330;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px;font:14px/1.4 Georgia,serif}
+  details{margin-top:8px}
+  details summary{cursor:pointer;color:var(--dim);font-size:13.5px}
+  pre.pr{white-space:pre-wrap;word-break:break-word;font:12.5px/1.45 Menlo,monospace;color:#cfc8e8;background:#101330;border-radius:8px;padding:10px;margin:8px 0 0}
+  .row{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
+  .row > div{flex:1;min-width:260px}
+  svg.beast{width:100%;max-width:300px;display:block;background:radial-gradient(circle at 50% 40%,#2a1f4a,#0d1026 75%);border-radius:14px;border:1px solid var(--line)}
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:10px 0}
+  th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+  th{color:var(--gold);font-weight:normal}
+  ul.what{margin:8px 0 0 18px;padding:0}
+  ul.what li{margin:4px 0}
+  kbd{background:#2a2d55;border-radius:4px;padding:1px 6px;font:12px Menlo,monospace}
+  .bar{position:fixed;left:0;right:0;bottom:0;background:#0b0e22ee;border-top:1px solid var(--line);padding:12px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;backdrop-filter:blur(6px)}
+  .bar button{background:var(--gold);color:#201500;border:0;border-radius:8px;padding:9px 16px;font:bold 14px Helvetica,sans-serif;cursor:pointer}
+  .bar .st{color:var(--dim);font-size:13.5px;flex:1;min-width:180px}
+  @media (max-width:600px){ h1{font-size:26px} .phones figure{flex:1 1 140px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1><span class="star">✦</span> STARSPELL — The Hollow Sky</h1>
+<p class="sub">The first calendar event · two nights, Halloween weekend · a dressed home, one hollow rule for the daily, a beast that rises only then, and a keepsake you can only earn those two nights. <b>Design only — nothing is built.</b> Chip every card, then COPY VERDICTS.</p>
+
+<div class="prov"><b>Skylar (Skylar's console), 2026-10-20, verbatim:</b> "Do a design page for Hollow Sky on a Skypilot github page use MJ that is open in the chrome tab, start wiring the first night into the live game."<br><br>
+The card it grows from (the 10/16 expansion page, C1): <i>"For two nights the home meadow wears a different plate, the daily borrows a hollow rule, and finishing it lights a one-time sigil frame or badge."</i></div>
+
+<div class="warnbar"><b>⚠ Midjourney is paused.</b> All six new prompts fired from your Chrome tab on 10/20 and MJ answered every one with <i>"Please subscribe to use Midjourney."</i> The subscription on the account in that tab has lapsed. Until it's back, this page uses <b>banked art from the 10/8 night-sky round</b> (the Moonlit Clouds sky you shortlisted) mocked into the real game, and drawn constellations. The six prompts are below, ready to fire again the moment the account works. The new art then drops into the dashed boxes.</div>
+
+<div class="lawbar"><b>The shape in one line:</b> on the daily's two Halloween nights, the weekday sky (Saturday's FALLING SKY, Sunday's COURT OF KINGS) steps aside for <b>THE HOLLOW SKY</b>. Same plumbing the seven skies already ride, plus one thing new: a sky can be <b>seated by date</b>, not just by weekday. That one switch is also what the winter solstice event (the Longest Night, Dec) would ride.</div>
+
+<h2>I · When</h2>
+<table>
+<tr><th>night</th><th>the daily's day (UTC)</th><th>for you (Eastern)</th><th>it replaces</th></tr>
+<tr><td>Hollow night one</td><td>Sat Oct 31</td><td>Fri Oct 30, 8 PM → Sat Oct 31, 8 PM EDT</td><td>THE FALLING SKY</td></tr>
+<tr><td>Hollow night two</td><td>Sun Nov 1</td><td>Sat Oct 31, 8 PM EDT → Sun Nov 1, 7 PM EST (clocks fall back that night)</td><td>THE COURT OF KINGS</td></tr>
+</table>
+<p class="note">The daily turns over at UTC midnight, so the event really opens Friday evening in the US. That's a good thing: Halloween night itself falls entirely inside it. <b>Who sees it:</b> the store release aims for Nov 5, so the Hollow Sky reaches web and TestFlight players, not App Store strangers. It's a dress rehearsal that proves the event plumbing before the Longest Night, which strangers <i>will</i> see.</p>
+
+<h2>II · The home, dressed for two nights</h2>
+<p class="note">Both mocks are the <b>real game</b> (v0.122.1, iPhone size, real doors, real flare), with a banked MJ sky seated behind the meadow. The meadow and its own crescent moon stay. Only the sky changes. Tap to view full size.</p>
+<div class="card" data-id="H-home">
+  <h3>The home plate</h3>
+  <div class="phones">
+    <figure><a href="mock-today.jpg" target="_blank"><img src="mock-today.jpg" alt="today's home"></a><div class="lbl">today (for comparison)</div></figure>
+    <figure><a href="mock-moonlit.jpg" target="_blank"><img src="mock-moonlit.jpg" alt="Hollow home, moonlit clouds"></a><div class="lbl"><b>A · Moonlit Clouds</b> (banked S6 v4, as painted)</div></figure>
+    <figure><a href="mock-ember.jpg" target="_blank"><img src="mock-ember.jpg" alt="Hollow home, ember grade"></a><div class="lbl"><b>B · Ember grade</b> (same frame, lower sky pushed to amber + ember stars)</div></figure>
+  </div>
+  <div class="pending"><b>C · the new MJ plates (waiting on the subscription):</b> <b>h1 Harvest Moon</b>, a huge low amber moon with violet cloud wisps · <b>h2 Hollow Mist</b>, a crescent behind drifting violet mist with three tiny distant bats · <b>h3 Lantern Meadow</b>, the meadow itself repainted with carved-pumpkin lanterns along a footpath, fireflies, an amber moon. All three are <kbd>--sref</kbd>-locked to the live meadow, so the palette matches.</div>
+  <div class="why">My read: <b>B</b> today, upgraded to <b>h1</b> if it lands well. The clouds read "spooky but cozy" without new art, and the ember stars are a code-only tint. <b>h3</b> is the most Halloween option, but it swaps the meadow plate too (bigger cut, and the doors sit on it). Only do it if the new art is clearly better.</div>
+</div>
+
+<h2>III · The hollow rule (one rule a night, like every sky)</h2>
+<p class="note">Each sky wears exactly one rule on its sheet band and herald ribbon. Pick one for the event. All three keep the daily's fairness law: any roll rides the sky's own dice off the day, so every player in a language gets the same night.</p>
+<div id="rules"></div>
+
+<h2>IV · The beast that rises only on the Hollow nights</h2>
+<div class="row" id="beasts"></div>
+
+<h2>V · The keepsake</h2>
+<p class="note">Earned by <b>hunting</b> the daily on either Hollow night, win or fall, the same truth the streak flame already keeps (it feeds on hunting, not winning). One-time, forever on the profile. It says "I was there."</p>
+<div id="keeps"></div>
+
+<h2>VI · The small touches (code only, no art)</h2>
+<div id="touches"></div>
+
+<h2>VII · Questions</h2>
+<div id="qs"></div>
+
+<h2>VIII · What it costs to build</h2>
+<ul class="what">
+  <li><b>One M card</b> on the STARSPELL lane: the dated seat in front of the weekday wheel, the plate swap (rides the soft lane like the night sky: absent ⇒ today's sky), the chosen rule, the beast, the keepsake, about 10 strings × 5 tongues, plus a harness that fakes the day to Oct 31 / Nov 1 and proves the stock week is untouched on every other day.</li>
+  <li><b>Art:</b> plan A/B is ready now (banked). Plan C needs MJ back, plus one cut session (seam cut like the 10/8 skies).</li>
+  <li><b>The clock:</b> the November road freezes <b>Thu Oct 30</b>, and the event goes live by its own date that same night. A <b>GO by Sat Oct 25</b> leaves room to build, test with a faked date, and ship before the freeze. After Oct 30 it's gone until next year.</li>
+  <li>No StoreKit, no new shell build, no server change. The daily board keys on the day as always.</li>
+</ul>
+
+<h2>IX · The six MJ prompts (fired 10/20, refused: subscription)</h2>
+<details><summary>show the prompts (ready to re-fire)</summary><pre class="pr" id="prompts"></pre></details>
+
+<p class="note" style="margin-top:30px">Repo: SkyPilot82/starspell-hollow-sky · mocks made in WebKit at 3× device pixels off the live build · page by Cowboy (claude-j), 10/20.</p>
+</div>
+
+<div class="bar"><span class="st" id="tally">no chips yet</span><button id="copy">COPY VERDICTS</button></div>
+
+<script>
+const KEY='sshollow.v1';
+let st={};try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){};tally()};
+const PICK=[['pick','★ pick'],['short','shortlist'],['pass','✗ pass']];
+function chipsHTML(id,opts){return `<div class="chips" data-for="${id}">${opts.map(([v,l])=>`<button class="chip" data-v="${v}">${l}</button>`).join('')}</div><textarea class="cmt" data-for="${id}" placeholder="notes (optional)"></textarea>`}
+function card(o,host){const d=document.createElement('div');d.className='card'+(o.rec?' rec':'');d.dataset.id=o.id;
+  d.innerHTML=`<h3>${o.id} · ${o.name}</h3><div class="meta">${o.rec?'<span class="r">my pick</span>':''}${o.size?`<span>size ${o.size}</span>`:''}</div><div>${o.what}</div><div class="why">${o.why}</div>${o.extra||''}`+chipsHTML(o.id,o.opts||PICK);host.appendChild(d)}
+
+const RULES=[
+ {id:'R1',rec:true,size:'S',name:'THE LANTERN TILES',what:'Three tiles in every deal are carved lanterns, glowing amber. <b>A word spelled through a lantern burns double.</b> Spend a lantern and the refill lights a new one somewhere on the board (the sky\'s own dice, so it\'s shared-fair).',why:'A gift night, like Monday\'s Gilded Letter: everyone feels clever, nobody quits. Halloween weekend should be the friendliest daily of the season, not the hardest. Reuses the gold-leaf tile overlay idea, re-tinted.'},
+ {id:'R2',size:'M',name:'THE VEILED BEAST',what:'Every beast of the hunt arrives in mist: no name, no health number, its constellation drawn faint. Each hit lights more of its stars, and <b>its name is spoken only as it falls.</b>',why:'Pure mood, and the same difficulty: you just can\'t see the bar. The most "Halloween" rule, but it hides information players lean on, so new players may find it confusing.'},
+ {id:'R3',size:'S',name:'THE HOLLOW HOUR',what:'A slow moon crosses the board\'s sky. While it\'s full (about every fourth cast), <b>green tiles heal double and the beast strikes half</b>. A rhythm to play into.',why:'A gentle timing rule with a visible moon. Nice, but it is the most new code of the three and the least obviously "Halloween".'},
+];
+const BEASTS=[
+ {id:'B1',rec:true,size:'S',name:'CORVUS crowned: THE HOLLOW KING',what:'CORVUS is already in the game, and his title is literally <b>THE HOLLOW RAVEN</b>. For two nights he rises crowned as the hunt\'s final beast: boss health and a new herald, "THE HOLLOW KING RISES". Same stars, same swoop.',why:'Zero new constellation data, zero risk, and it was named for this. The crown is drawn, not emoji.',svg:'corvus'},
+ {id:'B2',size:'M',name:'VESPER, THE NIGHT-WING (new, invented bat)',what:'A new invented constellation, a bat with spread wings, like STRIX (owl) and ARANEA (spider) were invented. It rises only on Hollow nights, then joins the year-round bestiary.',why:'A real "new thing", but a new beast needs authoring (stars, edges, idle and attack fx, titles in four tongues) and tuning. Better as next October\'s surprise or a 1.0.1 add. The MJ frame h6 was its concept art (waiting on the subscription).',svg:'vesper'},
+];
+const KEEPS=[
+ {id:'K1',rec:true,size:'S',name:'The Hollow badge on the profile',what:'A gilded medallion with a carved-lantern heart, set among the sign badges on the profile page and dated "2026". Drawn in code now (glass shield + ember lantern), or the MJ medallion <b>h4</b> once MJ is back.',why:'The profile is where you go to look at what you\'ve done. A dated badge also starts a shelf the next events add to.'},
+ {id:'K2',size:'S',name:'The Hollow frame on the pick sheets',what:'While the event runs, the sigil/upgrade pick sheets wear a vine-and-lantern frame (MJ <b>h5</b>). Earn the keepsake and you can keep wearing it afterwards.',why:'Pick sheets already wear MJ frames (wood/swirl/ember), so a fourth is cheap. But the frame is an art cut, and it needs MJ.'},
+ {id:'K3',size:'S',name:'A title under your name: "Keeper of the Hollow Night"',what:'A one-line title on the profile and the versus card.',why:'Text only, the cheapest. Pairs well with K1.'},
+];
+const TOUCHES=[
+ {id:'T1',rec:true,size:'S',name:'The flare turns ember',what:'The wordmark\'s glints and dust shift from gold to ember amber for the two nights (mock B shows the ember stars). The title itself still never moves.',why:'Your 10/15 rule is kept: everything moving is around the title, never on it.'},
+ {id:'T2',rec:true,size:'S',name:'The daily chip wears a lantern',what:'The red daily countdown chip on the home gets a small drawn lantern instead of the sun, and its sheet band speaks "THE HOLLOW SKY" with the rule\'s line.',why:'This is how players find out the event is on, without a pop-up.'},
+ {id:'T3',size:'S',name:'Fireflies turn to will-o\'-wisps',what:'The meadow\'s fireflies drift a little higher and glow ember-blue on Hollow nights.',why:'Tiny and atmospheric. Optional.'},
+];
+const QS=[
+ {id:'Q1',name:'Replace the weekday sky, or layer on top of it?',what:'My recommendation: <b>replace</b>. One rule a night keeps the sheet band honest, and Saturday\'s Falling Sky (a 12 s strike clock) on top of a Halloween rule would make the event night the hardest of the week.',opts:[['replace','replace (recommended)'],['layer','layer on top'],['ans-other','other (note)']]},
+ {id:'Q2',name:'Does the keepsake need a win?',what:'My recommendation: <b>hunting is enough</b> (any score), matching the streak flame. Event rewards that need a win punish exactly the casual players an event should catch.',opts:[['hunt','hunting is enough'],['win','needs a win'],['ans-other','other (note)']]},
+ {id:'Q3',name:'A code word?',what:'The expansion card floated an optional code word (GvT hides a boss behind LIBRARY). It could unlock the Hollow King in Endless once, after the event. Fun for friends who share it, invisible otherwise.',opts:[['nocode','no code word'],['code','yes: a code word'],['ans-other','other (note)']]},
+ {id:'Q4',name:'Fire the MJ round when the subscription is back?',what:'I re-fire the six prompts the moment MJ works, add the frames to section II/IV/V, and you judge plates C against A/B.',opts:[['fire','yes, re-fire all six'],['some','only the plates (h1–h3)'],['nomj','no, banked art is fine']]},
+];
+const mk=(arr,host,opts)=>arr.forEach(o=>card(Object.assign({opts},o),document.getElementById(host)));
+mk(RULES,'rules');mk(KEEPS,'keeps');mk(TOUCHES,'touches');
+QS.forEach(q=>card(Object.assign({},q,{opts:q.opts}),document.getElementById('qs')));
+// beasts with drawn constellations
+const CORVUS={stars:[[48,-30],[66,-22],[30,-24],[8,-10],[-28,4],[-46,14],[-42,-4],[2,-40],[-18,-56],[-40,-62],[8,14],[-8,30],[-28,40]],edges:[[0,1],[0,2],[2,3],[3,4],[4,5],[4,6],[2,7],[7,8],[8,9],[3,10],[10,11],[11,12]],eye:[50,-34],tint:'#b8a8ff'};
+const VESPER={stars:[[0,-18],[-6,-30],[6,-30],[0,2],[0,22],[-22,-14],[-44,-26],[-66,-20],[-80,0],[-62,6],[-48,-2],[-34,14],[22,-14],[44,-26],[66,-20],[80,0],[62,6],[48,-2],[34,14]],edges:[[0,1],[0,2],[0,3],[3,4],[0,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,11],[11,3],[0,12],[12,13],[13,14],[14,15],[15,16],[16,17],[17,18],[18,3],[6,10],[13,17]],eye:[0,-22],tint:'#ffb36b'};
+function beastSVG(b,crown){const s=2.2,cx=150,cy=130;const P=([x,y])=>[cx+x*s,cy+y*s];
+  let g=`<svg class="beast" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg">`;
+  for(let i=0;i<40;i++){const x=(i*73)%300,y=(i*131)%260;g+=`<circle cx="${x}" cy="${y}" r="${(i%3)*0.4+0.4}" fill="#cfd8ff" opacity="${0.15+(i%5)*0.07}"/>`}
+  b.edges.forEach(([a,c])=>{const[p,q]=[P(b.stars[a]),P(b.stars[c])];g+=`<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}" stroke="${b.tint}" stroke-opacity=".55" stroke-width="1.4"/>`});
+  b.stars.forEach(st=>{const[p0,p1]=P(st);g+=`<circle cx="${p0}" cy="${p1}" r="6" fill="${b.tint}" opacity=".18"/><circle cx="${p0}" cy="${p1}" r="2.6" fill="#fff"/>`});
+  const[e0,e1]=P(b.eye);g+=`<circle cx="${e0}" cy="${e1}" r="3.2" fill="#ffe6a6"/>`;
+  if(crown){const[hx,hy]=P([56,-44]);g+=`<path d="M${hx-14} ${hy+6} L${hx-14} ${hy-6} L${hx-7} ${hy+1} L${hx} ${hy-10} L${hx+7} ${hy+1} L${hx+14} ${hy-6} L${hx+14} ${hy+6} Z" fill="#e8b84a" stroke="#fff2c9" stroke-width="1"/><circle cx="${hx}" cy="${hy-12}" r="2.2" fill="#ffb36b"/>`}
+  return g+`</svg>`}
+BEASTS.forEach(o=>{const w=document.createElement('div');document.getElementById('beasts').appendChild(w);
+  card(Object.assign({opts:PICK,extra:beastSVG(o.svg==='corvus'?CORVUS:VESPER,o.svg==='corvus')+`<div class="lbl">${o.svg==='corvus'?'CORVUS\'s real stars from the game\'s data, with a drawn crown':'a first sketch of VESPER\'s stars (not final)'}</div>`},o),w)});
+// prompts
+const PR=`h1-harvestmoon | painterly storybook night sky, a huge low harvest moon glowing deep amber orange, thin wisps of violet cloud drifting across its face, indigo to plum to ember-rose gradient toward the bottom, scattered crisp tiny stars, cozy autumn Halloween mood, empty sky only, vertical mobile game background --ar 1:2 --sref <live meadow.png> --no text, letters, words, watermark, ground, trees, buildings, people
+
+h2-hollowmist | painterly storybook Halloween night sky, a thin silver crescent moon behind slow drifting violet mist, three tiny distant bat silhouettes, deep plum and indigo with a faint ember glow low on the horizon, scattered crisp tiny stars, empty sky only, vertical mobile game background --ar 1:2 --sref <live meadow.png> --no …
+
+h3-lanternmeadow | painterly storybook meadow at dusk on Halloween night, rolling dark green hills and pine silhouettes, a winding footpath lined with softly glowing carved pumpkin lanterns, fireflies in the grass, violet dusk sky with a warm amber moon, cozy and gentle not scary, vertical mobile game background --ar 9:16 --sref <live meadow.png> --no …
+
+h4-keepsake | ornate gilded medallion badge, a carved pumpkin lantern glowing warm amber at its heart, ringed by gold calligraphic swirls and tiny four-point stars, deep plum enamel field, storybook fantasy game reward icon, isolated on a dark plum background, centered --ar 1:1 --sref <live title.webp> --no …
+
+h5-frame | ornate fantasy card frame, gilded gold border woven with curling autumn vines and small glowing pumpkin lanterns at the four corners, a crescent moon crest at the top, empty dark plum center panel, storybook game UI asset --ar 2:3 --sref <live title.webp> --no …
+
+h6-vesper | a constellation in the shape of a bat with wide spread wings, drawn as glowing violet-white stars joined by thin silver lines, half hidden in drifting dark mist, against a deep plum night sky, mysterious storybook Halloween, game creature illustration --ar 1:1 --sref <live meadow.png> --no …`;
+document.getElementById('prompts').textContent=PR;
+// chips state
+document.querySelectorAll('.chips').forEach(c=>{const id=c.dataset.for;c.querySelectorAll('.chip').forEach(b=>{
+  b.onclick=()=>{st[id]=st[id]||{};st[id].v=(st[id].v===b.dataset.v)?null:b.dataset.v;paint();save()}})});
+document.querySelectorAll('textarea.cmt').forEach(t=>{const id=t.dataset.for;t.value=(st[id]&&st[id].n)||'';t.oninput=()=>{st[id]=st[id]||{};st[id].n=t.value;save()}});
+function paint(){document.querySelectorAll('.chips').forEach(c=>{const v=st[c.dataset.for]?.v;c.querySelectorAll('.chip').forEach(b=>{b.className='chip'+(b.dataset.v===v?(' on-'+(['pick','short','pass'].includes(v)?v:'ans')):'')})})}
+const ALL=[{id:'H-home',name:'The home plate'},...RULES,...BEASTS,...KEEPS,...TOUCHES,...QS];
+function tally(){const n=ALL.filter(o=>st[o.id]?.v).length;document.getElementById('tally').textContent=`${n} of ${ALL.length} chipped · saved in this browser`}
+// the home card needs its own chips (A/B/C)
+(function(){const h=document.querySelector('[data-id="H-home"]');h.insertAdjacentHTML('beforeend',chipsHTML('H-home',[['A','A · moonlit'],['B','B · ember'],['C','C · wait for MJ'],['pass','✗ no plate swap']]));
+  const c=h.querySelector('.chips');c.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{st['H-home']=st['H-home']||{};st['H-home'].v=(st['H-home'].v===b.dataset.v)?null:b.dataset.v;paint();save()});
+  const t=h.querySelector('textarea');t.value=(st['H-home']&&st['H-home'].n)||'';t.oninput=()=>{st['H-home']=st['H-home']||{};st['H-home'].n=t.value;save()}})();
+paint();tally();
+document.getElementById('copy').onclick=()=>{const lines=['STARSPELL — THE HOLLOW SKY verdicts ('+new Date().toLocaleString()+')'];
+  ALL.forEach(o=>{const s=st[o.id]||{};lines.push(`${o.id} ${o.name}: ${s.v||'—'}${s.n?' · '+s.n.replace(/\s+/g,' '):''}`)});
+  const txt=lines.join('\n');const done=()=>{document.getElementById('tally').textContent='copied ✓ paste it to Claude'};
+  (navigator.clipboard?navigator.clipboard.writeText(txt).then(done):Promise.reject()).catch(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();done()})};
+</script>
+</body>
+</html>
